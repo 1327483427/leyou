@@ -43,12 +43,32 @@ public class CategoryController {
             return ResponseEntity.ok(categories);
     }
 
+    /**
+     * 新增节点
+     * @param category
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Void> addCategory(Category category){
         this.categoryService.addCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * 更新
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity<Void> updateCategory(Category category){
+        this.categoryService.updateCategory(category);
+        return ResponseEntity.accepted().build();
+    }
+
+    /**
+     * 删除节点
+     * @param id
+     * @return
+     */
     @DeleteMapping("cid/{cid}")
     public ResponseEntity<Void> deleteCategory(@PathVariable("cid")Long id){
         this.categoryService.deleteCategoryById(id);

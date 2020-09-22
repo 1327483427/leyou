@@ -49,13 +49,11 @@ public class CategoryService {
      * @param id
      */
     public void  deleteCategoryById(Long id){
-
         Category category = this.categoryMapper.selectByPrimaryKey(id);
         if (category.getIsParent()){
             //如果当前节点是父节点，删除该节点以及所有子节点
             List<Category> leafNodeList = new ArrayList<>();
             queryAllLeafNode(category,leafNodeList);
-
             //查找所有子节点
             List<Category> nodeList = new ArrayList<>();
             queryAllNode(category,nodeList);
@@ -79,14 +77,20 @@ public class CategoryService {
             }else{
                 //没有兄弟，删除自己，父节点isParent改为false
                 this.categoryMapper.deleteByPrimaryKey(category.getId());
-
                 Category parent = new Category();
                 parent.setId(category.getParentId());
                 parent.setIsParent(false);
                 this.categoryMapper.updateByPrimaryKeySelective(parent);
             }
-
         }
+    }
+
+    /**
+     * 修改分类
+     * @param category
+     */
+    public void updateCategory(Category category) {
+        this.categoryMapper.updateByPrimaryKeySelective(category);
     }
 
     /**
@@ -120,6 +124,7 @@ public class CategoryService {
             queryAllLeafNode(category1,node);
         }
     }
+
 
 
 }
