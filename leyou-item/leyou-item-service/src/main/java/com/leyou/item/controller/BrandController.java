@@ -26,7 +26,7 @@ public class BrandController {
      * @param desc
      * @return
      */
-    @GetMapping
+    @GetMapping("page")
     public ResponseEntity<PageResult<Brand>> queryBrandsByPage(
             @RequestParam(value="key",required = false)String key,
             @RequestParam(value="page",defaultValue = "1")Integer page,
@@ -35,7 +35,7 @@ public class BrandController {
             @RequestParam(value="desc",required = false)Boolean desc
     ){
         PageResult<Brand> result =  this.brandService.queryBrandsByPage(key,page,rows,sortBy,desc);
-        if (result==null || CollectionUtils.isEmpty(result.getItems())){
+        if (CollectionUtils.isEmpty(result.getItems())){
             return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.ok(result);

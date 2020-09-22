@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,4 +42,17 @@ public class CategoryController {
             //200 查询成功
             return ResponseEntity.ok(categories);
     }
+
+    @PostMapping
+    public ResponseEntity<Void> addCategory(Category category){
+        this.categoryService.addCategory(category);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("cid/{cid}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable("cid")Long id){
+        this.categoryService.deleteCategoryById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

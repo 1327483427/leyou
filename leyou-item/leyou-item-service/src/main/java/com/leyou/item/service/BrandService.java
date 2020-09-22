@@ -47,6 +47,6 @@ public class BrandService {
         //包装成pageInfo
         PageInfo<Brand> pageInfo = new PageInfo<>(brands);
         //包装成分页结果集
-        return new PageResult<>();
+        return new PageResult<>(pageInfo.getTotal(),pageInfo.getList());
     }
 }
