@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class CategoryService {
+
     @Autowired
     private CategoryMapper categoryMapper;
 
@@ -23,6 +24,7 @@ public class CategoryService {
         Category record = new Category();
         record.setParentId(pid);
         return this.categoryMapper.select(record);
+
     }
 
     /**
@@ -61,10 +63,10 @@ public class CategoryService {
             for (Category c:nodeList){
                 this.categoryMapper.delete(c);
             }
-//            //维护中间表
-//            for (Category c:leafNodeList){
-//                this.categoryMapper.deleteByCategoryIdInCategoryBrand(c.getId());
-//            }
+            //维护中间表
+           for (Category c:leafNodeList){
+               this.categoryMapper.deleteByCategoryIdInCategoryBrand(c.getId());
+            }
         }else{
             //当前节点不是父节点
             // 1、查询当前节点父节点有几个孩子（兄弟个数）
@@ -74,6 +76,8 @@ public class CategoryService {
             if (list.size()!=1){
                 //有兄弟，直接删除自己
                 this.categoryMapper.deleteByPrimaryKey(category.getId());
+                //维护中间表
+                this.categoryMapper.deleteByCategoryIdInCategoryBrand(category.getId());
             }else{
                 //没有兄弟，删除自己，父节点isParent改为false
                 this.categoryMapper.deleteByPrimaryKey(category.getId());
@@ -81,6 +85,8 @@ public class CategoryService {
                 parent.setId(category.getParentId());
                 parent.setIsParent(false);
                 this.categoryMapper.updateByPrimaryKeySelective(parent);
+                //维护中间表
+                this.categoryMapper.deleteByCategoryIdInCategoryBrand(category.getId());
             }
         }
     }
@@ -125,6 +131,23 @@ public class CategoryService {
         }
     }
 
+    /**
+     * 通过品牌ID查询商品分类
+     * @param bid
+     * @return
+     */
+    public List<Category> queryByBrandId(Long bid) {
+        return this.categoryMapper.queryByBrandId(bid);
+    }
+
+    /**
+     * 查询数据库中最后一条数据
+     * @return
+     */
+    public List<Category> queryLast() {
+        List<Category> last =this.categoryMapper.selectLast();
+        return last;
+    }
 
 
 }

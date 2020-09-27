@@ -41,7 +41,6 @@ public class BrandService {
         PageHelper.startPage(page,rows);
         //添加排序条件
         if (StringUtils.isNotBlank(sortBy)){
-
             example.setOrderByClause(sortBy+ " " + (desc ? "desc" : "asc"));
         }
         List<Brand> brands = this.brandMapper.selectByExample(example);
@@ -66,7 +65,39 @@ public class BrandService {
                this.brandMapper.insertCategoryAndBrand(cid,brand.getId());
            });
 //       }
-
         //再新增中间表
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateBrand(Brand brand,List<Long> cids) {
+        this.deleteByBrandIdInCategoryBrand(brand.getId());
+
+        this.brandMapper.updateByPrimaryKeySelective(brand);
+        //维护品牌和分类中间表
+        for (Long cid : cids) {
+            //System.out.println("cid:"+cid+",bid:"+brand.getId());
+            this.brandMapper.insertCategoryAndBrand(cid, brand.getId());
+        }
+    }
+
+    /**
+     * 品牌删除
+     * @param id
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBrand(Long id) {
+        //删除品牌信息
+        brandMapper.deleteByPrimaryKey(id);
+        //维护中间表
+        brandMapper.deleteByBrandIdInCategoryBrand(id);
+    }
+
+    /**
+     * 删除中间表中的数据
+     * @param bid
+     */
+    public void deleteByBrandIdInCategoryBrand(Long bid) {
+        brandMapper.deleteByBrandIdInCategoryBrand(bid);
+    }
+
 }

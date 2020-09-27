@@ -75,4 +75,18 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 通过品牌id查询商品分类
+     * @param bid
+     * @return
+     */
+    @GetMapping("bid/{bid}")
+    public ResponseEntity<List<Category>> queryByBrandId(@PathVariable("bid")Long bid){
+        List<Category> list = this.categoryService.queryByBrandId(bid);
+        if(list.size() < 1){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
 }

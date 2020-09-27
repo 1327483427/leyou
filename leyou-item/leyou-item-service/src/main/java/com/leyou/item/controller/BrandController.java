@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.util.List;
@@ -58,4 +55,32 @@ public class BrandController {
         this.brandService.saveBrand(brand,cids);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    /**
+     * 品牌修改
+     * @param brand
+     * @param cids
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity<Void> updateBrand(Brand brand,@RequestParam("cids") List<Long> cids){
+        this.brandService.updateBrand(brand,cids);
+        return  ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    /**
+     *
+     * @return
+     */
+    @DeleteMapping("bid/{bid}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable("bid")Long bid){
+        //删除brand表数据
+        this.brandService.deleteBrand(bid);
+        //删除中间表数据
+        this.brandService.deleteByBrandIdInCategoryBrand(bid);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
 }
