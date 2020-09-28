@@ -65,7 +65,7 @@ public class GoodsService {
         List<Spu> spus = this.spuMapper.selectByExample(example);
         PageInfo<Spu> pageInfo = new PageInfo<>(spus);
 
-        //5,spu集合转化为spubo集合
+        //5,spu集合转化为spuBo集合
         List<SpuBo> spuBos = spus.stream().map(spu -> {
             SpuBo spuBo = new SpuBo();
             BeanUtils.copyProperties(spu,spuBo);
@@ -78,7 +78,7 @@ public class GoodsService {
             return spuBo;
         }).collect(Collectors.toList());
 
-        //6,返回pageresult<SpuBo>
+        //6,返回pageResult<SpuBo>
         return new PageResult<>(pageInfo.getTotal(), spuBos);
     }
 }
