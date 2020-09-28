@@ -8,6 +8,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -147,6 +148,12 @@ public class CategoryService {
     public List<Category> queryLast() {
         List<Category> last =this.categoryMapper.selectLast();
         return last;
+    }
+
+
+    public List<String> queryNamesByIds(List<Long> ids){
+        List<Category> categories = this.categoryMapper.selectByIdList(ids);
+        return categories.stream().map(category -> category.getName()).collect(Collectors.toList());
     }
 
 
