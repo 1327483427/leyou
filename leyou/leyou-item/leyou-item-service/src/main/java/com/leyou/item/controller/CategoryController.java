@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @PostMapping("addCategory")
-    public ResponseEntity<Void> addCategory(@ModelAttribute("u")Category category){
+    public ResponseEntity<Void> addCategory(@RequestBody Category category){
         if(this.categoryService.addCategory(category) == 1){
             return  ResponseEntity.status(HttpStatus.CREATED).build();
         };

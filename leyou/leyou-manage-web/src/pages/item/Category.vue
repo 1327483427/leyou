@@ -14,6 +14,7 @@
 
 <script>
 import {treeData} from "../../mockDB";
+import message from "../../components/messages"
 
   export default {
     name: "category",
@@ -25,9 +26,12 @@ import {treeData} from "../../mockDB";
     },
     methods: {
       handleAdd(node) {
-        console.log("add .... ");
-        console.log(node);
-        
+        this.$http.post("/item/category/addCategory",node).
+        then(function(resp){
+          message.success("新增成功")
+        }).catch(function(error){
+          message.success("新增失败")
+        });
       },
       handleEdit(id, name) {
         console.log("edit... id: " + id + ", name: " + name)

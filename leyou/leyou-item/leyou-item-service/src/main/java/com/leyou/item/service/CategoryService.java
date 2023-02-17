@@ -20,7 +20,15 @@ public class CategoryService {
     }
 
     public int addCategory(Category category){
+        //id自增，设置为空
         category.setId(null);
-        return this.categoryMapper.insert(category);
+        //2.保存
+        int count = this.categoryMapper.insert(category);
+        //3.修改父节点
+        Category parent = new Category();
+        parent.setId(category.getParentId());
+        parent.setIsParent(true);
+        this.categoryMapper.updateByPrimaryKeySelective(parent);
+        return count;
     }
 }
