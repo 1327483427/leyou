@@ -47,4 +47,25 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @PostMapping("deleteCategory")
+    public ResponseEntity<Void> deleteCategory(@RequestParam(value = "id",defaultValue = "0")Long id){
+        if (id == null || id == 0){
+            return ResponseEntity.badRequest().build();
+        };
+        if (this.categoryService.deleteCategoryById(id) == 1){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @PostMapping("modifyCategory")
+    public ResponseEntity<Void> modifyCategory(@RequestBody Category category){
+        if (this.categoryService.queryCategoryById(category.getId()) == null){
+            return ResponseEntity.notFound().build();
+        }
+        if(this.categoryService.modifyCategory(category) == 1){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }

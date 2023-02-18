@@ -86,7 +86,7 @@
     watch: {
       pagination: { // 监视pagination属性的变化
         deep: true, // deep为true，会监视pagination的属性及属性中的对象属性变化
-        handler() {
+        handler(newVal,oldVal) {
           // 变化后的回调函数，这里我们再次调用getDataFromServer即可
           this.getDataFromServer();
         }

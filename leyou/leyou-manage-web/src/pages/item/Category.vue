@@ -30,13 +30,31 @@ import message from "../../components/messages"
         then(function(resp){
           message.success("新增成功")
         }).catch(function(error){
-          message.success("新增失败")
+          message.error("新增失败"+error)
         });
       },
       handleEdit(id, name) {
-        console.log("edit... id: " + id + ", name: " + name)
+        
+        var category = {
+          id:id,
+          name:name
+        };
+
+        this.$http.post("/item/category/modifyCategory",category).
+        then(function(resp){
+          message.success("修改成功")
+        }).catch(function(error){
+          message.error("修改失败"+error)
+        });
+
+        // console.log("edit... id: " + id + ", name: " + name)
       },
       handleDelete(id) {
+        this.$http.post("/item/category/deleteCategory?id="+id).then(function(resp){
+          message.success("删除成功")
+        }).catch(function(error){
+          message.error("删除失败"+error)
+        });
         console.log("delete ... " + id)
       },
       handleClick(node) {
