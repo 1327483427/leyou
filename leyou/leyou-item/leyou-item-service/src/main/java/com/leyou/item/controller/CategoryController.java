@@ -55,6 +55,7 @@ public class CategoryController {
         if (this.categoryService.deleteCategoryById(id) == 1){
             return ResponseEntity.ok().build();
         }
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
@@ -67,5 +68,17 @@ public class CategoryController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @GetMapping("bid/{bid}")
+    public ResponseEntity<List<Category>> queryCategoryByBrandId(@PathVariable Long bid){
+        if (bid == null || bid < 0) {
+            return ResponseEntity.badRequest().build();
+        };
+        List<Category> categoryList = this.categoryService.queryCategoryByBrandId(bid);
+        if (CollectionUtils.isEmpty(categoryList)) {
+            return ResponseEntity.notFound().build();
+        };
+        return ResponseEntity.ok(categoryList);
     }
 }

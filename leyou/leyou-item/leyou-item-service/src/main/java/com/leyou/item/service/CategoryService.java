@@ -52,4 +52,8 @@ public class CategoryService {
         newCategory.setName(category.getName());
         return this.categoryMapper.updateByPrimaryKeySelective(category);
     }
+
+    public List<Category> queryCategoryByBrandId(Long bid) {
+        return this.categoryMapper.queryCategoryByBrandId(bid);
+    }
 }

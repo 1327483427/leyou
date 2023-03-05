@@ -12,3 +12,5 @@ zuul:
   prefix: /api # 路由路径前缀
   routes:
     item-service: /item/**  #路由到商品微服务
+  ignored-services:
+    - upload-service # 忽略upload-service服务  集合语法，代表多个
