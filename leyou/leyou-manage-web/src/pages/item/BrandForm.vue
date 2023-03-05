@@ -47,6 +47,7 @@
           image: '',// 品牌logo
           categories: [], // 品牌所属的商品分类数组
         },
+        //Vuetify 校验规则 通过指定rule属性
         nameRules: [
           v => !!v || "品牌名称不能为空",
           v => v.length > 1 || "品牌名称至少2位"
@@ -72,13 +73,12 @@
           this.$http({
             method: this.isEdit ? 'put' : 'post',
             url: '/item/brand',
-            data: params
+            data: this.$qs.stringify(params)
           }).then(() => {
             // 关闭窗口
             this.$emit("close");
             this.$message.success("保存成功！");
-          })
-            .catch(() => {
+          }).catch(() => {
               this.$message.error("保存失败！");
             });
         }
